@@ -2,7 +2,6 @@ package cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.vistas;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.Alumno;
@@ -163,13 +162,12 @@ public class Menu extends MenuTemplate {
 			opcion = scI.nextInt();
 			opcion -= 1;// Corregir indice lista
 
-			// Opcion de agregar nota con ciclo, permite agregar multiples notas por
-			// materias
+			// Opcion de agregar nota con ciclo, permite agregar multiples notas por materias
 			do {
 				System.out.print("Ingresar nota: ");
 				nota = scF.nextFloat();
 				listaMaterias.get(opcion).getNotas().add(nota);// Agrega nota en lista de notas
-				System.out.printf("¿Desea ingresar otra nota en %s\n?[si/no]", listaMaterias.get(opcion).getNombre());
+				System.out.printf("¿Desea ingresar otra nota en %s?[si/no]\n", listaMaterias.get(opcion).getNombre());
 				opcion2 = scL.nextLine();
 
 			} while (opcion2.equalsIgnoreCase("si"));
@@ -195,7 +193,14 @@ public class Menu extends MenuTemplate {
 		// TODO Auto-generated method stub
 		super.listarAlumnos();
 		
-		alumnosServicio.listarAlumnos().entrySet().stream().filter(alumno -> alumno.getKey() != "").forEach(System.out::println);
+		System.out.println("");
+		System.out.println("---------------LISTAR ALUMNOS---------------");
+		System.out.println("");
+		
+		alumnosServicio.listarAlumnos();//Llama a metodo para listar
+		
+		System.out.println("-----------------------------------------");
+		System.out.println("");
 	}
 
 	@Override

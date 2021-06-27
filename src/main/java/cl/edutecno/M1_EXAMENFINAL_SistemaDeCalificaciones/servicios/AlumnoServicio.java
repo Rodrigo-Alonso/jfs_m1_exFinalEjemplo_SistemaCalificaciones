@@ -1,13 +1,12 @@
 package cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.servicios;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.Alumno;
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.Materia;
-import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.MateriaEnum;
 
 public class AlumnoServicio {
 
@@ -15,9 +14,7 @@ public class AlumnoServicio {
 
 	public void crearAlumno(Alumno alumno) {
 
-		listaAlumnos.put(alumno.getRut(), alumno);// alumno -> listaAlumno
-		System.out.println(alumno);
-		System.out.println(listaAlumnos);
+		listaAlumnos.put(alumno.getRut(), alumno);// Se agrega alumno con key=rut
 		System.out.println("Alumno creado");
 	}
 
@@ -29,7 +26,6 @@ public class AlumnoServicio {
 		alumno.getMaterias().add(currentMate);// Agregar materia a lista materias en alumno
 		listaAlumnos.put(rutAlumno, alumno);// Agrega alumno actualizacon con materia a listaAlumnos
 
-		System.out.println(listaAlumnos); // Ayuda - Testeo de correcto ingreso
 		System.out.println("Materia agregada");
 	}
 
@@ -52,15 +48,26 @@ public class AlumnoServicio {
 		
 		Map<String, Alumno> lista = listaAlumnos;
 		
-//		if (lista.size() != 0) {
-//			
-//			for (Alumno listaAlumnos : lista) {
-//				
-//			}
-//			
-//		}else {
-//			System.out.println("No se puede listar los productos");
-//		}
+		if (lista.size() != 0) {
+			
+			for (Map.Entry<String, Alumno> alumno : lista.entrySet()) {//Iterar sobre cada elemento en Map
+				System.out.println("Datos Alumno");
+				System.out.println("RUT: " + alumno.getValue().getRut());
+				System.out.println("Nombre: " + alumno.getValue().getNombre());
+				System.out.println("Apellido: " + alumno.getValue().getApellido());
+				System.out.println("Direccion: " + alumno.getValue().getDireccion());
+				System.out.println("Materias");
+				for (Materia materia : alumno.getValue().getMaterias()) {//Iterar sobre cada elementos de lista de materias
+					System.out.println(materia.getNombre());
+					System.out.println("Notas");
+					System.out.println(materia.getNotas());
+				}
+				System.out.println("");
+			}
+			
+		}else {
+			System.out.println("No se pueden listar alumnos");
+		}
 
 		return lista;
 	}

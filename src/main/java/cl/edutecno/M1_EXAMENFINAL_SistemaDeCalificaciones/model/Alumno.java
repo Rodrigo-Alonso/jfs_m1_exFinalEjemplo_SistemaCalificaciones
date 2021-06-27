@@ -53,8 +53,8 @@ public class Alumno {
 
 	@Override
 	public String toString() {
-		return "Rut: " + rut + "\n" + "Nombre: " + nombre + "\n" + "Apellido: " + apellido + "\n" + "Direccion: "
-				+ direccion + "\n" + "Materias: " + materias;
+		return "Alumno [rut=" + rut + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion
+				+ ", materias=" + materias + "]";
 	}
 
 }
