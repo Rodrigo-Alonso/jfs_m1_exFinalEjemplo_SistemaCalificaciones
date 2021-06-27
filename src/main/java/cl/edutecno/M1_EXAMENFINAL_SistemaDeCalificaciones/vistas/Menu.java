@@ -58,7 +58,7 @@ public class Menu extends MenuTemplate {
 			System.out.println("Ingrese Direccion: ");
 			dato = scL.nextLine();
 			alumno.setDireccion(dato);
-			alumno.setMaterias(listaMaterias);//Poder iterar sobre esta lista
+			alumno.setMaterias(listaMaterias);// Se setea lista de materia
 
 			alumnosServicio.crearAlumno(alumno);
 
@@ -77,6 +77,7 @@ public class Menu extends MenuTemplate {
 		super.agregarMateria();
 
 		Materia materia = new Materia();
+		ArrayList<Float> listaNotasMaterias = new ArrayList<Float>();
 		String rut = " ";
 		int opcion = 0;
 
@@ -86,7 +87,7 @@ public class Menu extends MenuTemplate {
 			System.out.println("");
 			System.out.println("Ingrese RUT del Alumno: ");
 			rut = scL.nextLine();
-			
+
 			System.out.println("");
 			System.out.println("1. " + MateriaEnum.MATEMATICAS);
 			System.out.println("2. " + MateriaEnum.LENGUAJE);
@@ -95,25 +96,29 @@ public class Menu extends MenuTemplate {
 			System.out.print("Selecciona una materia: ");
 			opcion = scI.nextInt();
 
-			switch (opcion) {
+			switch (opcion) {// Se agrega materia y lista de notas
 			case 1:
 				materia.setNombre(MateriaEnum.MATEMATICAS);
+				materia.setNotas(listaNotasMaterias);
 				break;
 			case 2:
 				materia.setNombre(MateriaEnum.LENGUAJE);
+				materia.setNotas(listaNotasMaterias);
 				break;
 			case 3:
 				materia.setNombre(MateriaEnum.CIENCIA);
+				materia.setNotas(listaNotasMaterias);
 				break;
 			case 4:
 				materia.setNombre(MateriaEnum.HISTORIA);
+				materia.setNotas(listaNotasMaterias);
 				break;
 			default:
 				System.out.println("Seleccion no valida, no se pudo agregar una materia");
 				break;
 			}
 
-			alumnosServicio.agregarMateria(rut, materia);//Materia -> Map<String,Alumno>listAlumnos
+			alumnosServicio.agregarMateria(rut, materia);// Se envia materia de alumno
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -129,7 +134,9 @@ public class Menu extends MenuTemplate {
 		// TODO Auto-generated method stub
 		super.agregarNotaPasoUno();
 
+		List<Materia> listaMaterias = new ArrayList<Materia>();
 		String rut = "";
+		String opcion2 = "";
 		float nota = 0f;
 		int count = 1;
 		int opcion = 0;
@@ -141,22 +148,39 @@ public class Menu extends MenuTemplate {
 			System.out.println("Ingrese RUT del Alumno: ");
 			rut = scL.nextLine();
 			System.out.println("Alumno tiene las siguientes materias agregadas: ");
-
-			// alumnosServicio.materiasPorAlumnos(dato).stream().filter(x -> x <
-			// 10).forEach(i -> System.out.println("." + i.getNombre()));
-			Map<String, Alumno> listaAlumnos = alumnosServicio.listarAlumnos();
-
-			for (Materia materia : alumnosServicio.materiasPorAlumnos(rut)) {
+			
+			//Opcion para filtrar con Stream segun rut
+//			alumnosServicio.materiasPorAlumnos(rut).stream().forEach(i ->
+//			System.out.println(i.getNombre()));
+			
+			listaMaterias = alumnosServicio.materiasPorAlumnos(rut);
+			for (Materia materia : listaMaterias) {// Filtrado de Materias por alumno segun rut
 				System.out.printf("%d. %s\n", count, materia.getNombre());
 				count++;
 			}
-			System.out.println(alumnosServicio.materiasPorAlumnos(rut));// Ayuda
+
 			System.out.print("Seleccionar materia: ");
 			opcion = scI.nextInt();
-			System.out.print("Ingresar nota: ");
-			nota = scF.nextFloat();
+			opcion -= 1;// Corregir indice lista
 
-			System.out.println("Nota agregada a ...");
+			// Opcion de agregar nota con ciclo, permite agregar multiples notas por
+			// materias
+			do {
+				System.out.print("Ingresar nota: ");
+				nota = scF.nextFloat();
+				listaMaterias.get(opcion).getNotas().add(nota);// Agrega nota en lista de notas
+				System.out.printf("¿Desea ingresar otra nota en %s\n?[si/no]", listaMaterias.get(opcion).getNombre());
+				opcion2 = scL.nextLine();
+
+			} while (opcion2.equalsIgnoreCase("si"));
+
+			// Opcion de agregar nota sin ciclo, permite agregar una sola nota por materia
+//			System.out.print("Ingresar nota: ");
+//			nota = scF.nextFloat();
+//			listaMaterias.get(opcion).getNotas().add(nota);//Agrega nota en lista de notas
+
+			alumnosServicio.agregarNotas(listaMaterias, rut);// Se envia lista de materias con nota
+			System.out.printf("nota agregada a %s\n", listaMaterias.get(opcion).getNombre());
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -170,6 +194,8 @@ public class Menu extends MenuTemplate {
 	public void listarAlumnos() {
 		// TODO Auto-generated method stub
 		super.listarAlumnos();
+		
+		alumnosServicio.listarAlumnos().entrySet().stream().filter(alumno -> alumno.getKey() != "").forEach(System.out::println);
 	}
 
 	@Override

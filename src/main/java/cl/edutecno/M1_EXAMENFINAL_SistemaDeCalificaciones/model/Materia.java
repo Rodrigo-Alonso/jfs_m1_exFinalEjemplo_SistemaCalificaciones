@@ -26,7 +26,7 @@ public class Materia {
 
 	@Override
 	public String toString() {
-		return "Materia [nombre=" + nombre + ", notas=" + notas + "]";
+		return nombre + "\n" + "Notas: " + "\n" + notas;
 	}
 
 }
