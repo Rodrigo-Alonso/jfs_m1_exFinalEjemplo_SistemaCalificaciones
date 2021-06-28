@@ -2,6 +2,7 @@ package cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.vistas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.Alumno;
@@ -15,7 +16,7 @@ public class Menu extends MenuTemplate {
 
 	AlumnoServicio alumnosServicio = new AlumnoServicio();
 	ArchivoServicio archivoServicio = new ArchivoServicio();
-	static Scanner scL = new Scanner(System.in);
+	static Scanner scS = new Scanner(System.in);
 	static Scanner scI = new Scanner(System.in);
 	static Scanner scF = new Scanner(System.in);
 
@@ -30,6 +31,25 @@ public class Menu extends MenuTemplate {
 	public void exportarDatos() {
 		// TODO Auto-generated method stub
 		super.exportarDatos();
+		String ruta = "";
+		
+		try {
+			System.out.println("");
+			System.out.println("---------------EXPORTAR DATOS---------------");
+			System.out.println("");
+			System.out.print("Ingrese la ruta en donde se guardara el archivo notas.txt: ");
+			ruta = scS.nextLine();// Ruta formato ejemplo: src/directorio
+			
+			archivoServicio.exportarDatos(alumnosServicio.listarAlumnos(), ruta);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error en ejecucion Expotar Datos: " + e.getMessage());
+		}
+		
+		System.out.println("-----------------------------------------");
+		System.out.println("");
+		
 	}
 
 	@Override
@@ -45,19 +65,19 @@ public class Menu extends MenuTemplate {
 			System.out.println("");
 			System.out.println("---------------CREAR ALUMNO---------------");
 			System.out.println("");
-			System.out.println("Ingrese RUT: ");
-			dato = scL.nextLine();
+			System.out.print("Ingrese RUT: ");
+			dato = scS.nextLine();
 			alumno.setRut(dato);
-			System.out.println("Ingrese Nombre: ");
-			dato = scL.nextLine();
+			System.out.print("Ingrese Nombre: ");
+			dato = scS.nextLine();
 			alumno.setNombre(dato);
-			System.out.println("Ingrese Apellido: ");
-			dato = scL.nextLine();
+			System.out.print("Ingrese Apellido: ");
+			dato = scS.nextLine();
 			alumno.setApellido(dato);
-			System.out.println("Ingrese Direccion: ");
-			dato = scL.nextLine();
+			System.out.print("Ingrese Direccion: ");
+			dato = scS.nextLine();
 			alumno.setDireccion(dato);
-			alumno.setMaterias(listaMaterias);// Se setea lista de materia
+			alumno.setMaterias(listaMaterias);// Se agrega lista de materias
 
 			alumnosServicio.crearAlumno(alumno);
 
@@ -84,8 +104,8 @@ public class Menu extends MenuTemplate {
 			System.out.println("");
 			System.out.println("---------------AGREGAR MATERIA---------------");
 			System.out.println("");
-			System.out.println("Ingrese RUT del Alumno: ");
-			rut = scL.nextLine();
+			System.out.print("Ingrese RUT del Alumno: ");
+			rut = scS.nextLine();
 
 			System.out.println("");
 			System.out.println("1. " + MateriaEnum.MATEMATICAS);
@@ -144,16 +164,16 @@ public class Menu extends MenuTemplate {
 			System.out.println("");
 			System.out.println("---------------AGREGAR NOTA---------------");
 			System.out.println("");
-			System.out.println("Ingrese RUT del Alumno: ");
-			rut = scL.nextLine();
+			System.out.print("Ingrese RUT del Alumno: ");
+			rut = scS.nextLine();
 			System.out.println("Alumno tiene las siguientes materias agregadas: ");
-			
-			//Opcion para filtrar con Stream segun rut
+
+			// Opcion para filtrar con Stream segun rut sin contador
 //			alumnosServicio.materiasPorAlumnos(rut).stream().forEach(i ->
 //			System.out.println(i.getNombre()));
-			
+
 			listaMaterias = alumnosServicio.materiasPorAlumnos(rut);
-			for (Materia materia : listaMaterias) {// Filtrado de Materias por alumno segun rut
+			for (Materia materia : listaMaterias) {// Filtrado de Materias por alumno segun rut con contador
 				System.out.printf("%d. %s\n", count, materia.getNombre());
 				count++;
 			}
@@ -162,15 +182,16 @@ public class Menu extends MenuTemplate {
 			opcion = scI.nextInt();
 			opcion -= 1;// Corregir indice lista
 
-			// Opcion de agregar nota con ciclo, permite agregar multiples notas por materias
+			// Opcion de agregar nota con ciclo, permite agregar multiples notas por
+			// materias
 			do {
 				System.out.print("Ingresar nota: ");
 				nota = scF.nextFloat();
 				listaMaterias.get(opcion).getNotas().add(nota);// Agrega nota en lista de notas
-				System.out.printf("¿Desea ingresar otra nota en %s?[si/no]\n", listaMaterias.get(opcion).getNombre());
-				opcion2 = scL.nextLine();
+				System.out.printf("¿Desea ingresar otra nota en %s?[s/n]: ", listaMaterias.get(opcion).getNombre());
+				opcion2 = scS.nextLine();
 
-			} while (opcion2.equalsIgnoreCase("si"));
+			} while (opcion2.equalsIgnoreCase("s"));
 
 			// Opcion de agregar nota sin ciclo, permite agregar una sola nota por materia
 //			System.out.print("Ingresar nota: ");
@@ -192,13 +213,39 @@ public class Menu extends MenuTemplate {
 	public void listarAlumnos() {
 		// TODO Auto-generated method stub
 		super.listarAlumnos();
-		
-		System.out.println("");
-		System.out.println("---------------LISTAR ALUMNOS---------------");
-		System.out.println("");
-		
-		alumnosServicio.listarAlumnos();//Llama a metodo para listar
-		
+
+		try {
+			System.out.println("");
+			System.out.println("---------------LISTAR ALUMNOS---------------");
+			System.out.println("");
+
+			Map<String, Alumno> lista = alumnosServicio.listarAlumnos();// Llama a metodo para listar
+
+			if (lista.size() != 0) {
+
+				for (Map.Entry<String, Alumno> alumno : lista.entrySet()) {// Iterar sobre cada elemento en Map
+					System.out.println("Datos Alumno");
+					System.out.println("RUT: " + alumno.getValue().getRut());
+					System.out.println("Nombre: " + alumno.getValue().getNombre());
+					System.out.println("Apellido: " + alumno.getValue().getApellido());
+					System.out.println("Direccion: " + alumno.getValue().getDireccion());
+					System.out.println("Materias");
+					for (Materia materia : alumno.getValue().getMaterias()) {// Iterar sobre cada elementos de Materia
+						System.out.println(materia.getNombre());
+						System.out.println("Notas");
+						System.out.println(materia.getNotas());
+					}
+					System.out.println("");
+				}
+			} else {
+				System.out.println("No se pueden listar alumnos");
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error en ejecucion Listar Alumno: " + e.getMessage());
+		}
+
 		System.out.println("-----------------------------------------");
 		System.out.println("");
 	}
