@@ -48,5 +48,14 @@ public class AlumnoServicio {
 
 		return lista;
 	}
+	
+	//G&S
+	public Map<String, Alumno> getListaAlumnos() {
+		return listaAlumnos;
+	}
+
+	public void setListaAlumnos(Map<String, Alumno> listaAlumnos) {
+		this.listaAlumnos = listaAlumnos;
+	}
 
 }

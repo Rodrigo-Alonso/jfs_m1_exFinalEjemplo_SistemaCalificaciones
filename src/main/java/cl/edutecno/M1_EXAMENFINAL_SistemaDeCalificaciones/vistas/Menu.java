@@ -25,6 +25,21 @@ public class Menu extends MenuTemplate {
 	public void cargarDatos() {
 		// TODO Auto-generated method stub
 		super.cargarDatos();
+		String ruta = "";
+
+		System.out.println("");
+		System.out.println("---------------CARGAR DATOS---------------");
+		System.out.println("");
+		System.out.print("Ingrese la ruta en donde se encuentra el archivo notas.csv: ");
+		ruta = scS.nextLine();// Ruta formato ejemplo: src/directorio/notas.csv
+
+		for (Alumno alumno : archivoServicio.cargarDatos(ruta)) {// Itera sobre lista de alumnos
+			alumnosServicio.getListaAlumnos().put(alumno.getRut(), alumno);// Guarda alumnos en Map
+		}
+
+		System.out.println("Datos exportados correctamente.");
+		System.out.println("-----------------------------------------");
+		System.out.println("");
 	}
 
 	@Override
@@ -32,24 +47,18 @@ public class Menu extends MenuTemplate {
 		// TODO Auto-generated method stub
 		super.exportarDatos();
 		String ruta = "";
-		
-		try {
-			System.out.println("");
-			System.out.println("---------------EXPORTAR DATOS---------------");
-			System.out.println("");
-			System.out.print("Ingrese la ruta en donde se guardara el archivo notas.txt: ");
-			ruta = scS.nextLine();// Ruta formato ejemplo: src/directorio
-			
-			archivoServicio.exportarDatos(alumnosServicio.listarAlumnos(), ruta);
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Error en ejecucion Expotar Datos: " + e.getMessage());
-		}
-		
+
+		System.out.println("");
+		System.out.println("---------------EXPORTAR DATOS---------------");
+		System.out.println("");
+		System.out.print("Ingrese la ruta en donde se guardara el archivo notas.txt: ");
+		ruta = scS.nextLine();// Ruta formato ejemplo: src/directorio
+
+		archivoServicio.exportarDatos(alumnosServicio.listarAlumnos(), ruta);// Envia Map para exportar
+
 		System.out.println("-----------------------------------------");
 		System.out.println("");
-		
+
 	}
 
 	@Override
