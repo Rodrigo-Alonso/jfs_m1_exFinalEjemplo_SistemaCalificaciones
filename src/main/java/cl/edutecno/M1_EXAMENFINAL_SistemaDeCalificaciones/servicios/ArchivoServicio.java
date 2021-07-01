@@ -15,7 +15,6 @@ import java.util.Scanner;
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.Alumno;
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.Materia;
 import cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.model.MateriaEnum;
-import sun.jvmstat.perfdata.monitor.AliasFileParser;
 
 public class ArchivoServicio {
 
@@ -27,7 +26,6 @@ public class ArchivoServicio {
 		// Cargar datos desde .csv
 		alumnosACargarAlumnos = new ArrayList<Alumno>();
 		String[] arrayData;
-		
 
 		try {
 
@@ -43,42 +41,43 @@ public class ArchivoServicio {
 					List<Materia> listaMaterias = new ArrayList<Materia>();
 					List<Float> listaNotas = new ArrayList<Float>();
 					arrayData = data.split(",");// [rut, nombre, apellido, direccion, materia, nota]
-					System.out.println(arrayData);
+					//System.out.println(arrayData);
 
-					// [rut, nombre, apellido, direccion, List<materia>[materiaEnum, List<nota>[nota_1,nota_2,...,nota_n]]]
+					// [rut, nombre, apellido, direccion, List<materia>[materiaEnum,
+					// List<nota>[nota_1,nota_2,...,nota_n]]]
 
 					// AGREGAR MATERIAS Y NOTAS A ALUMNOS CORRESPONDIENTES SEGUN RUT
-					
+
 					if (alumnosACargarAlumnos.size() == 0) {
 						alumno.setRut(arrayData[0]);
 						alumno.setNombre(arrayData[1]);
 						alumno.setApellido(arrayData[2]);
 						alumno.setDireccion(arrayData[3]);
-						materia.setNombre(MateriaEnum.valueOf(arrayData[4]));
+						materia.setNombre(MateriaEnum.valueOf(arrayData[4].toUpperCase()));
 						listaNotas.add(Float.parseFloat(arrayData[5]));
 						materia.setNotas(listaNotas);
 						listaMaterias.add(materia);
 						alumno.setMaterias(listaMaterias);
 						alumnosACargarAlumnos.add(alumno);
-					}else {
-						
+					} else {
+
 						for (Alumno alumnoTemp : alumnosACargarAlumnos) {
-							
-							if (alumnoTemp.getRut() == arrayData[0]) {
-								
+
+							if (alumnoTemp.getRut().equalsIgnoreCase(arrayData[0])) {
+
 								for (Materia materiaTemp : alumnoTemp.getMaterias()) {
-									
-									if (materiaTemp.getNombre() == MateriaEnum.valueOf(arrayData[4].toUpperCase())) {
-										materia.getNotas().add(Float.parseFloat(arrayData[5]));
+
+									if (materiaTemp.getNombre().equals(MateriaEnum.valueOf(arrayData[4].toUpperCase()))) {
+										materiaTemp.getNotas().add(Float.parseFloat(arrayData[5]));
 									} else {
-										materia.setNombre(MateriaEnum.valueOf(arrayData[4].toUpperCase()));
-										materia.getNotas().add(Float.parseFloat(arrayData[5]));
+										materiaTemp.setNombre(MateriaEnum.valueOf(arrayData[4].toUpperCase()));
+										materiaTemp.getNotas().add(Float.parseFloat(arrayData[5]));
 									}
-									
-									//listaMaterias.add(materia);
-									//alumnoTemp.setMaterias(listaMaterias);
+
+									// listaMaterias.add(materia);
+									// alumnoTemp.setMaterias(listaMaterias);
 								}
-							}else {
+							} else {
 								alumno.setRut(arrayData[0]);
 								alumno.setNombre(arrayData[1]);
 								alumno.setApellido(arrayData[2]);

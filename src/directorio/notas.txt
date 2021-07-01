@@ -1,6 +1,3 @@
-Alumno : 1-7 - Pedor
-Alumno : 1-8 - Alonso
-Materia : LENGUAJE - Promedio : 6.36
-Materia : CIENCIA - Promedio : 6.44
 Alumno : 1-9 - Rodrigo
-Materia : MATEMATICAS - Promedio : 6.27
+Materia : MATEMATICAS - Promedio : 6
+Materia : CIENCIA - Promedio : 6
