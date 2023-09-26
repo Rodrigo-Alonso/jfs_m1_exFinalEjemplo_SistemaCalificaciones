@@ -33,7 +33,7 @@ public class Utilidad {
 	}
 
 	public void limpiezaPantalla() {
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 200; i++) {
 			System.out.println("");
 		}
 		System.exit(0);

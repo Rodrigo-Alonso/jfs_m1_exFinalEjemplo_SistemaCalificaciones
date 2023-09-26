@@ -3,43 +3,43 @@ package cl.edutecno.M1_EXAMENFINAL_SistemaDeCalificaciones.vistas;
 import java.util.Scanner;
 
 public class MenuTemplate {
-	
+
 	static Scanner scI = new Scanner(System.in);
-	
-	//Metodos
+
+	// Metodos
 	public void cargarDatos() {
-		
+
 	}
-	
+
 	public void exportarDatos() {
-		
+
 	}
-	
+
 	public void crearAlumno() {
-		
+
 	}
-	
+
 	public void agregarMateria() {
-		
+
 	}
-	
+
 	public void agregarNotaPasoUno() {
-		
+
 	}
-	
+
 	public void listarAlumnos() {
-		
+
 	}
-	
+
 	public void terminarPrograma() {
-		
+
 	}
-	
+
 	public void iniciarMenu(Scanner sc) {
-		
-		//Logica pra denotar los demas metodos en base a entrada del teclado
+
+		// Logica pra denotar los demas metodos en base a entrada del teclado
 		Menu menu = new Menu();
-		
+
 		try {
 			int opcion;
 			do {
@@ -52,7 +52,7 @@ public class MenuTemplate {
 				System.out.println("7. Salir");
 				System.out.print("Seleccion: ");
 				opcion = scI.nextInt();
-				
+
 				switch (opcion) {
 				case 1:
 					menu.crearAlumno();
@@ -80,9 +80,8 @@ public class MenuTemplate {
 					break;
 				}
 
-				
 			} while (opcion != 7);
-			
+
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			System.out.println("Caracter no valido: " + e.getMessage());
@@ -90,10 +89,7 @@ public class MenuTemplate {
 			// TODO: handle exception
 			System.out.println("Error en ejecucion menu: " + e.getMessage());
 		}
-		
+
 	}
-	
-	
 
 }
-

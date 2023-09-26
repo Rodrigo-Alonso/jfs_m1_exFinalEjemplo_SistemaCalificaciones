@@ -1,0 +1,3 @@
+Alumno : 1-9 - Rodrigo
+Materia : MATEMATICAS - Promedio : 6
+Materia : CIENCIA - Promedio : 6
